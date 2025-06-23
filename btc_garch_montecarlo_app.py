@@ -16,7 +16,16 @@ umbral_factor = st.sidebar.slider("Multiplicador de umbral de volatilidad", min_
 
 with st.spinner("Descargando datos de BTC..."):
     btc = yf.download("BTC-USD", start="2020-01-01")
-    returns = 100 * btc['Adj Close'].pct_change().dropna()
+
+# Debug: mostrar columnas
+st.write("Columnas disponibles:", btc.columns.tolist())
+
+# Verifica si existe 'Adj Close'
+if 'Adj Close' not in btc.columns:
+    st.error("No se encontró la columna 'Adj Close'. La descarga puede estar fallando.")
+    st.stop()
+
+returns = 100 * btc['Adj Close'].pct_change().dropna()
 
 # ========== MODELO GARCH ==========
 garch_model = arch_model(returns, vol='Garch', p=1, q=1)
