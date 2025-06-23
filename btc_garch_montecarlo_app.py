@@ -17,9 +17,6 @@ umbral_factor = st.sidebar.slider("Multiplicador de umbral de volatilidad", min_
 with st.spinner("Descargando datos de BTC..."):
     btc = yf.download("BTC-USD", start="2020-01-01")
 
-# Debug: mostrar columnas
-st.write("Columnas disponibles:", btc.columns.tolist())
-
 returns = 100 * btc['Close'].pct_change().dropna()
 
 # ========== MODELO GARCH ==========
