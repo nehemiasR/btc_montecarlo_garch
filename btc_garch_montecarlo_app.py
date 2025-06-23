@@ -29,9 +29,6 @@ elif interval == "15m":
 with st.spinner("Descargando datos de BTC..."):
     btc = yf.download("BTC-USD", start=start_date, interval=interval)
 
-# Mostrar columnas disponibles
-st.write("Columnas disponibles:", btc.columns.tolist())
-
 # Validación básica
 if btc.empty or 'Close' not in btc.columns:
     st.error("No se pudieron obtener datos válidos de BTC. Intenta con otro intervalo.")
