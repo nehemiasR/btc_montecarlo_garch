@@ -29,7 +29,13 @@ forecast = res.forecast(horizon=1)
 volatility_today = np.sqrt(forecast.variance.values[-1][0]) / 100
 mean_return = returns.mean() / 100
 
-vol_threshold = returns.rolling(30).std().mean() / 100 * umbral_factor
+vol_std = returns.rolling(30).std()
+if vol_std.isna().all():
+    st.error("No hay suficientes datos recientes para calcular la volatilidad.")
+    st.stop()
+
+vol_threshold = vol_std.mean() / 100 * umbral_factor
+
 anomaly = volatility_today > vol_threshold
 
 st.subheader("🔍 Estado actual del mercado:")
