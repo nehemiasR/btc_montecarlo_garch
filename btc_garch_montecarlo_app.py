@@ -30,12 +30,11 @@ volatility_today = np.sqrt(forecast.variance.values[-1][0]) / 100
 mean_return = returns.mean() / 100
 
 vol_std = returns.rolling(30).std()
-if vol_std.isna().all():
+if vol_std.isna().all().all():
     st.error("No hay suficientes datos recientes para calcular la volatilidad.")
     st.stop()
 
 vol_threshold = vol_std.mean() / 100 * umbral_factor
-
 anomaly = volatility_today > vol_threshold
 
 st.subheader("🔍 Estado actual del mercado:")
@@ -48,7 +47,7 @@ else:
 
 # ========== SIMULACIÓN ==========
 if anomaly:
-    S0 = btc['Adj Close'][-1]
+    S0 = btc['Close'][-1]
     T = dias
     N = simulaciones_n
 
@@ -62,27 +61,4 @@ if anomaly:
         simulaciones[:, i] = precios
 
     expected_path = simulaciones.mean(axis=1)
-    p05 = np.percentile(simulaciones, 5, axis=1)
-    p95 = np.percentile(simulaciones, 95, axis=1)
-
-    # ========== GRÁFICO ==========
-    st.subheader("📊 Simulación Monte Carlo (con GARCH)")
-    fig, ax = plt.subplots(figsize=(12, 6))
-    ax.plot(simulaciones, color='skyblue', alpha=0.02)
-    ax.plot(expected_path, color='black', label='Promedio esperado')
-    ax.plot(p05, color='red', linestyle='--', label='5% percentil')
-    ax.plot(p95, color='green', linestyle='--', label='95% percentil')
-    ax.set_title("Simulación Monte Carlo de BTC")
-    ax.set_xlabel("Días futuros")
-    ax.set_ylabel("Precio BTC (USD)")
-    ax.legend()
-    ax.grid(True)
-    st.pyplot(fig)
-
-    # ========== RESULTADOS ==========
-    st.subheader("📌 Resultados:")
-    st.write(f"- Precio actual: **{S0:.2f} USD**")
-    st.write(f"- Precio esperado en {T} días: **{expected_path[-1]:.2f} USD**")
-    st.write(f"- Rango 90% esperado: **{p05[-1]:.2f} USD - {p95[-1]:.2f} USD**")
-else:
-    st.info("No se generó simulación porque no hay anomalía significativa en la volatilidad.")
+    p05 = np.perce
