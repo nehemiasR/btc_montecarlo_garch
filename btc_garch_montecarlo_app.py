@@ -42,6 +42,25 @@ if anomaly:
 else:
     st.success("✅ Volatilidad dentro de rango normal. No se recomienda operar impulsivamente.")
 
+# ========== GRAFICAR VOLATILIDAD GARCH ==========
+
+# Volatilidad condicional estimada
+garch_vol = res.conditional_volatility / 100
+
+# Mostrar gráfico
+st.subheader("📉 Volatilidad estimada por GARCH")
+
+fig2, ax2 = plt.subplots(figsize=(12, 4))
+ax2.plot(garch_vol, label="Volatilidad GARCH", color='blue')
+ax2.axhline(vol_threshold, color='red', linestyle='--', label="Umbral de volatilidad")
+ax2.set_title("Volatilidad diaria estimada (modelo GARCH)")
+ax2.set_xlabel("Fecha")
+ax2.set_ylabel("Volatilidad (σ)")
+ax2.legend()
+ax2.grid(True)
+st.pyplot(fig2)
+
+
 # ========== SIMULACIÓN ==========
 if anomaly:
     S0 = btc['Close'][-1]
