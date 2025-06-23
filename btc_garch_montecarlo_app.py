@@ -25,7 +25,7 @@ if 'Adj Close' not in btc.columns:
     st.error("No se encontró la columna 'Adj Close'. La descarga puede estar fallando.")
     st.stop()
 
-returns = 100 * btc['Adj Close'].pct_change().dropna()
+returns = 100 * btc['Close'].pct_change().dropna()
 
 # ========== MODELO GARCH ==========
 garch_model = arch_model(returns, vol='Garch', p=1, q=1)
