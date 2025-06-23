@@ -34,7 +34,7 @@ if vol_std.isna().all().all():
     st.error("No hay suficientes datos recientes para calcular la volatilidad.")
     st.stop()
 
-vol_threshold = vol_std.mean() / 100 * umbral_factor
+vol_threshold = vol_std.mean().mean() / 100 * umbral_factor
 anomaly = volatility_today > vol_threshold
 
 st.subheader("🔍 Estado actual del mercado:")
