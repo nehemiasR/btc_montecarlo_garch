@@ -29,9 +29,6 @@ elif interval == "15m":
 with st.spinner(f"Descargando datos BTC-USD con intervalo {interval}..."):
     btc = yf.download("BTC-USD", start=start_date, interval=interval)
 
-# Mostrar columnas disponibles para debug
-st.write("Columnas disponibles:", btc.columns.tolist())
-
 # Revisar que haya datos
 if btc.empty:
     st.error("No se descargaron datos. Intenta cambiar la temporalidad o fecha.")
@@ -66,7 +63,13 @@ forecast = res.forecast(horizon=1)
 volatility_today = np.sqrt(forecast.variance.values[-1][0]) / 100
 mean_return = returns.mean() / 100
 
-vol_threshold = vol_std.mean() / 100 * umbral_factor
+# Calcular umbral de volatilidad asegurando que sea escalar float
+vol_threshold = float(vol_std.mean()) / 100 * umbral_factor
+
+# Mostrar métricas
+st.metric("Volatilidad estimada actual", f"{volatility_today:.4f}")
+st.metric("Umbral de volatilidad", f"{vol_threshold:.4f}")
+
 anomaly = volatility_today > vol_threshold
 
 # Mostrar estado mercado con colores y barras
