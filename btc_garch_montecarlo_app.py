@@ -37,7 +37,6 @@ if btc.empty:
 # Detectar y aplanar MultiIndex en columnas si existe
 if isinstance(btc.columns, pd.MultiIndex):
     btc.columns = btc.columns.get_level_values(0)
-    st.write("Columnas aplanadas:", btc.columns.tolist())
 
 # Verificar que 'Close' exista
 if 'Close' not in btc.columns:
