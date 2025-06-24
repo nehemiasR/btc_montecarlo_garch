@@ -92,6 +92,8 @@ else:
     st.success("✅ Volatilidad dentro de rango normal. No se recomienda operar impulsivamente.")
 
 # Simulación solo si hay anomalía
+st.write("Columnas disponibles:", btc.columns.tolist())
+
 if anomaly:
     S0 = btc['Close'][-1]
     T = dias
