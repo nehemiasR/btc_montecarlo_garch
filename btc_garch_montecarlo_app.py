@@ -65,11 +65,6 @@ mean_return = returns.mean() / 100
 
 # Calcular umbral de volatilidad asegurando que sea escalar float
 vol_threshold = float(vol_std.mean()) / 100 * umbral_factor
-
-# Mostrar métricas
-st.metric("Volatilidad estimada actual", f"{volatility_today:.4f}")
-st.metric("Umbral de volatilidad", f"{vol_threshold:.4f}")
-
 anomaly = volatility_today > vol_threshold
 
 # Mostrar estado mercado con colores y barras
