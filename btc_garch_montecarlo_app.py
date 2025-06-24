@@ -34,6 +34,16 @@ if btc.empty:
     st.error("No se descargaron datos. Intenta cambiar la temporalidad o fecha.")
     st.stop()
 
+# Detectar y aplanar MultiIndex en columnas si existe
+if isinstance(btc.columns, pd.MultiIndex):
+    btc.columns = btc.columns.get_level_values(0)
+    st.write("Columnas aplanadas:", btc.columns.tolist())
+
+# Verificar que 'Close' exista
+if 'Close' not in btc.columns:
+    st.error("La columna 'Close' no está disponible en los datos descargados.")
+    st.stop()
+
 # Calcular retornos (porcentaje)
 returns = 100 * btc['Close'].pct_change().dropna()
 
@@ -92,10 +102,8 @@ else:
     st.success("✅ Volatilidad dentro de rango normal. No se recomienda operar impulsivamente.")
 
 # Simulación solo si hay anomalía
-st.write("Columnas disponibles:", btc.columns.tolist())
-
 if anomaly:
-    S0 = btc['Close'][-1]
+    S0 = btc['Close'].iloc[-1]
     T = dias
     N = simulaciones_n
 
