@@ -14,8 +14,6 @@ st.sidebar.header("⚙️ Parámetros")
 dias = st.sidebar.slider("Días a simular", min_value=10, max_value=90, value=30)
 simulaciones_n = st.sidebar.slider("Número de simulaciones", min_value=100, max_value=2000, value=1000)
 umbral_factor = st.sidebar.slider("Multiplicador de umbral de volatilidad", min_value=1.0, max_value=3.0, value=1.5)
-interval = st.sidebar.selectbox("Temporalidad", options=["1d"], index=0)
-st.write(f"Temporalidad seleccionada: {interval}")
 interval = st.sidebar.selectbox("Temporalidad", options=["1d", "1h", "15m"], index=0)
 
 # ========== AJUSTE DE FECHAS SEGÚN INTERVALO ==========
